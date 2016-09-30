@@ -1,0 +1,134 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2016. 9. 24, 오후 5:39:33
+    Author     : salesiopark
+*/
+
+.code-area {
+    -fx-font-family: monospace;     //폰트
+    -fx-font-size: 20;              // 폰트사이즈
+    -fx-background-color: #171812//#272822;  //배경색
+}
+
+/* //이게 활성화되면 keyword hightling을 덮어써 버려서
+   // 모든 글자의 색상이 이것으로 보이게 된다.(bug인듯)
+.code-area .text { //.code-area 와 .text 사이에 반드시 공백이 있어야 한다.
+    -fx-fill: #FFFFFF;             // 문자 색상
+}*/
+
+.caret { // 캐럿 색상
+    -fx-stroke:white;              
+}
+
+.lineno { // 줄번호 영역의 스타일 지정
+    -fx-font-family: Consolas;//monospace;
+    -fx-background-color:  #272822;//#474842;
+    -fx-text-fill: #8F908A;
+    -fx-padding: 0 5px;
+}
+
+///*
+// caret이 있는 줄을 highlighting 시킬 색상 지정
+// highlighting 하지 않으려면 전체를 comment  시키면 됨
+.paragraph-box:has-caret {
+    -fx-background-color: #272822;//#3f403a; //#373832;
+}
+//*/
+
+//----------------------------------------------------------------------------
+.code {
+    -fx-fill: white;
+}
+
+.keyword {
+    -fx-fill: #C678DD; //yellow;// #6FC7F6;//steelblue ;//purple;
+    -fx-font-weight: bold;
+}
+
+.builtin {
+    -fx-fill: #56B6C2;//lightpink;// #6FC7F6;//steelblue ;//purple;
+    -fx-font-weight: bold;
+}
+
+/*
+.semicolon {
+    -fx-font-weight: bold;
+}
+.paren {
+    -fx-fill: firebrick;
+    -fx-font-weight: bold;
+}
+.bracket {
+    -fx-fill: darkgreen;
+    -fx-font-weight: bold;
+}
+.brace {
+    -fx-fill: teal;
+    -fx-font-weight: bold;
+}
+*/
+.string {
+    -fx-fill: #98C379; //lightgreen;
+    -fx-font-weight: bold;
+}
+
+.number {
+    -fx-fill: orange;
+    -fx-font-weight: bold;
+}
+
+.comment {
+	-fx-fill: #5C6370;//#B5B19E;//#A5A18E;
+        -fx-font-weight: bold;
+}
+
+
+///*
+//----------------------------------------------------------------------------
+.java-keyword {
+    -fx-fill:#6FC7F6;//steelblue;
+    -fx-font-weight:bold;  //-fx-font-style:itatic; // not working
+    //-fx-background-color: white; //not working
+}
+
+.arduino-func { // style for arduino library functions
+    -fx-fill: #91E22E;//blue;//azure;//navy; //#A6E22E;//font forecolor
+    -fx-font-weight:bold;
+}
+.arduino-const { // style for arduino constants
+    -fx-fill:yellow;// saddlebrown;
+    //-fx-font-weight:bold;
+}
+
+/*
+.default { // default font style
+    -fx-fill: white;
+    //-fx-font-weight:bold;
+    -fx-text-fill: white;
+}
+*/
+
+.tab-area {
+    -fx-region-background : #17A1A5;
+}
+
+.error-line {
+    -fx-fill : red;
+    -fx-font-weight:bold;
+    -fx-underline: true;
+    //-fx-text-fill: red;//not working
+    //-fx-background-color: red;//not working
+    //-fx-background-fills: red;//not working
+}
+
+#comboBox .list-cell
+ {
+    -fx-font-family: arial;
+    -fx-font-size: 16px;
+    -fx-text-fill: #a0522d;
+ }
+ //*/
