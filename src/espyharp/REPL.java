@@ -40,7 +40,6 @@ public class REPL {
     
     public static int iPosCommStrt = 0; // 입력 시작 위치
     public static int iPosEnter = 0; // 엔터키를 누른 이후의 caret 위치
-//    public static String strSent = ""; // 보낸 명령문
     
     public static PortReader listener = new PortReader();
     
@@ -51,6 +50,9 @@ public class REPL {
     
     // 최초 실행 후 파일리스트를 아직 읽지 않았음을 표시
     public static boolean bFileRead = false;
+    
+    // 실행속도를 높이기 위해서 버퍼링을 수행해야 함
+    private static final int BUFSIZE = 1000;
     
     public static void init(AnchorPane apane) {
         caREPL = new CodeArea();
@@ -195,10 +197,17 @@ public class REPL {
                     
                     //아래와 같이 하지 않으면 thread 에러가 발생한다.
                     // 현재 thread가 종료된 이후에 실행된다.
-                    // Platform.runLater(new Runnable() {@Override public void run() {
-                    Platform.runLater( () -> { // 윗 줄을 익명함수 이용 수정
-                        caREPL.appendText(receivedData);
-                        if (receivedData.contains(">>>")) {
+                    Platform.runLater( () -> {
+                        // 성능상의 이유로 정해진 사이즈(BUFSIZE)이상이면
+                        // codeArea의 text를 리셋한다.
+                        if (caREPL.getText().length()<=BUFSIZE ) {
+                            caREPL.appendText(receivedData);
+                        } else {
+                            caREPL.replaceText(receivedData);
+                        }
+                        
+                        ///*
+                        if (receivedData.contains(">>> ")) {
                             String str = caREPL.getText();
                             iPosCaretBlock = iPosCommStrt = str.length();
                             moveCaretTo(iPosCommStrt);
@@ -216,7 +225,7 @@ public class REPL {
                             iPosCaretBlock = str.lastIndexOf("... ") + 4;
                             iPosCommStrt = str.length();
                             moveCaretTo(iPosCommStrt);
-                        }
+                        }//*/
                     });
                         
                 }

@@ -52,7 +52,8 @@ public class Uart {
             serialPort.purgePort(SerialPort.PURGE_RXCLEAR);
             serialPort.purgePort(SerialPort.PURGE_TXCLEAR);
             
-            int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR;
+//            int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR;
+            int mask = SerialPort.MASK_RXCHAR;// + SerialPort.MASK_CTS + SerialPort.MASK_DSR;
             serialPort.setEventsMask(mask);
             serialPort.addEventListener(new REPL.PortReader());
             
