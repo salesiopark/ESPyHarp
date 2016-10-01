@@ -6,8 +6,8 @@
 package espyharp;
 
 //import static espyharp.REPL.serialPort;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.text.Text;
 import jssc.SerialPort;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
@@ -43,7 +43,7 @@ public class Uart {
         return serialPort;
     }
     
-    static public void connect() {
+    static public void connect(Button btnConnect) {
         String strPort = comboBoxPorts.getSelectionModel().getSelectedItem().toString();
         serialPort = new SerialPort(strPort);
         try {
@@ -58,6 +58,7 @@ public class Uart {
             
             serialPort.writeByte((byte)4); // soft-reset
             REPL.setDisable(false);//REPL을 활성화시킨다.
+            btnConnect.setDisable(true);
         } catch (SerialPortException ex) {
             System.out.println("serial port open error: " + ex);
         }
@@ -69,6 +70,7 @@ public class Uart {
      * @param strComm 전송할 문자열. 만약 null이 넘어오면 
      */
     static public void exec(String strComm){
+        if (isNotOpened()) return;
         try{
             if (strComm==null) {
                 serialPort.writeString("\r") ;

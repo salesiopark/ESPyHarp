@@ -33,13 +33,15 @@ and open the template in the editor.
 
 ///*
 // caret이 있는 줄을 highlighting 시킬 색상 지정
-// highlighting 하지 않으려면 전체를 comment  시키면 됨
+// highlighting 하지 않으려면 이 전체를 comment out 하면 됨
 .paragraph-box:has-caret {
     -fx-background-color: #272822;//#3f403a; //#373832;
 }
 //*/
 
 //----------------------------------------------------------------------------
+
+// highlight할 부분이 아닌 문자들의 색상
 .code {
     -fx-fill: white;
 }
@@ -54,23 +56,6 @@ and open the template in the editor.
     -fx-font-weight: bold;
 }
 
-/*
-.semicolon {
-    -fx-font-weight: bold;
-}
-.paren {
-    -fx-fill: firebrick;
-    -fx-font-weight: bold;
-}
-.bracket {
-    -fx-fill: darkgreen;
-    -fx-font-weight: bold;
-}
-.brace {
-    -fx-fill: teal;
-    -fx-font-weight: bold;
-}
-*/
 .string {
     -fx-fill: #98C379; //lightgreen;
     -fx-font-weight: bold;
@@ -89,6 +74,7 @@ and open the template in the editor.
 
 ///*
 //----------------------------------------------------------------------------
+/*
 .java-keyword {
     -fx-fill:#6FC7F6;//steelblue;
     -fx-font-weight:bold;  //-fx-font-style:itatic; // not working
@@ -103,14 +89,12 @@ and open the template in the editor.
     -fx-fill:yellow;// saddlebrown;
     //-fx-font-weight:bold;
 }
-
-/*
-.default { // default font style
-    -fx-fill: white;
-    //-fx-font-weight:bold;
-    -fx-text-fill: white;
-}
 */
+
+//tabpane에서 tab이 없을 때 보이는 배경색을 지정
+.tabpane {
+    -fx-background-color : #272822;//black;
+}
 
 .tab-area {
     -fx-region-background : #17A1A5;

@@ -30,28 +30,51 @@ public class FileIO {
             new ExtensionFilter("All Files", "*.*"));
         File selectedFile = fileChooser.showOpenDialog(node.getScene().getWindow());
         if (selectedFile != null) {
-            CodeArea codeArea = TabPaneCode.addTab(selectedFile.getName());
-            readFile(selectedFile, codeArea);
-//            System.out.println(selectedFile);
+            TabPy tabPy = TabPaneCode.addTab(selectedFile.getName());
+            tabPy.setFile(selectedFile);
+            readFile(selectedFile, tabPy.getCodeArea());
         }
     }
     
     public static void saveFile(Node node) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save File");
-        fileChooser.getExtensionFilters().addAll(
-            new ExtensionFilter("python script", "*.py"),
-            new ExtensionFilter("web scritp", "*.html", "*.js", "*.css"),
-            new ExtensionFilter("All Files", "*.*"));
-        File selectedFile = fileChooser.showSaveDialog(node.getScene().getWindow());
-        if (selectedFile != null) {
+        // 만약 TabPy에 fileSave가 지정이 되어 있다면 그 파일에 기록한다.
+        TabPy tabPySelected = TabPaneCode.getSelectedTab();
+        if (tabPySelected == null) {
+            System.out.println("No selected tab");
+            return;
+        }
+        File fileToSave = tabPySelected.getFile();
+        if (fileToSave == null) {
+                saveFileAs(node);
+        } else { //만약 이미 지정된 파일이 있다면 그 파일에 저장한다.
+            System.out.println("file saving using prev file ...");
             String code = TabPaneCode.getSelectedTabCode();
-            storeFile(selectedFile, code);
+            storeFile(fileToSave, code);
         }
     }
     
+    public static void saveFileAs(Node node) {
+            TabPy tabPySelected = TabPaneCode.getSelectedTab();
+
+            // save as 는 무조건 새파일을 지정받는다
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save File");
+            fileChooser.getExtensionFilters().addAll(
+                new ExtensionFilter("python script", "*.py"),
+                new ExtensionFilter("web scritp", "*.html", "*.js", "*.css"),
+                new ExtensionFilter("All Files", "*.*"));
+            File selectedFile = fileChooser.showSaveDialog(node.getScene().getWindow());
+            if (selectedFile != null) {
+                //tabPy의 이름을 새로운 파일명으로 바꾸고 저장한다.
+                tabPySelected.setText(selectedFile.getName());
+                tabPySelected.setFile(selectedFile);
+                String code = TabPaneCode.getSelectedTabCode();
+                storeFile(selectedFile, code);
+            }
+    }
+    
      static private void readFile(File file, CodeArea codeArea){
-        if(file != null){
+//        if(file != null){
             try{
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr); 
@@ -70,7 +93,7 @@ public class FileIO {
             } catch(IOException e) { // file not found
                 System.out.println("File not found.");
             }
-        }
+//        }
     }
      
      static private void storeFile(File file, String code) {

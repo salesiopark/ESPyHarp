@@ -25,7 +25,7 @@ import jssc.SerialPortException;
  */
 public class TreeViewFile {
     
-    private static TreeItem<String> root = new TreeItem<String>("device/");
+    private static TreeItem<String> root = new TreeItem<String>(Var.strTreeViewRootName);
     private static TreeView<String> treeViewFiles;
             
     static private String strRcvd; // serialPort 에서 받은 문자열
@@ -34,7 +34,6 @@ public class TreeViewFile {
     
     public static void init(AnchorPane apParent) {
         root.setExpanded(true);
-//        TreeView<String> treeViewFiles = new TreeView<String>(root);
         treeViewFiles = new TreeView<String>(root);
         Util.setCss(treeViewFiles, "default.css", "treeview");
         
@@ -45,15 +44,15 @@ public class TreeViewFile {
         treeViewFiles.setOnMouseClicked((mouseEvent)->{ //MouseEvent Object
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if(mouseEvent.getClickCount() == 2) {
-                      readFileSelected();
-//                    nameSelected = treeViewFiles.getSelectionModel().getSelectedItem().getValue();
-//                    // Tab이 있다면 활성화
-//                    if (TabPaneCode.isExist(nameSelected)) {
-//                        TabPaneCode.activateTab(nameSelected);
-//                    } else { // 없다면 새로 추가한 후 그것을 활성화함.
-//                          TabPaneCode.addTab(nameSelected);
-//                    }
-//                    readFile(nameSelected);
+                    String nameSelected = treeViewFiles.getSelectionModel().getSelectedItem().getValue();
+                    if (nameSelected.equals(Var.strTreeViewRootName)) {
+                        //만약 root를 더블클릭했다면(이미 기본동작은 수행되었음)
+                        //그냥 리턴시킨다.
+                        return;
+                    } else {
+                        // 아니라면 해당 파일을 Tab에 연다
+                        readFileSelected();
+                    }
                 }
             }
         });
@@ -65,6 +64,7 @@ public class TreeViewFile {
      * 그리고 readFile(name)함수를 호출한다.
      */
     public static void readFileSelected() {
+        if (Uart.isNotOpened()) return;
         nameSelected = treeViewFiles.getSelectionModel().getSelectedItem().getValue();
         // Tab이 있다면 활성화
         if (TabPaneCode.isExist(nameSelected)) {
@@ -165,6 +165,7 @@ public class TreeViewFile {
     }
     
     public static void removeSelected() {
+        if (Uart.isNotOpened()) return;
         TreeItem<String> tiSelected = treeViewFiles.getSelectionModel().getSelectedItem();
         String nameSelected = tiSelected.getValue();
         
@@ -184,6 +185,7 @@ public class TreeViewFile {
     }
 
     public static void execSelected() {
+        if (Uart.isNotOpened()) return;
         String nameSelected = treeViewFiles.getSelectionModel().getSelectedItem().getValue();
         Uart.exec(String.format("exec(open('%s').read(),globals())", nameSelected));
     }    

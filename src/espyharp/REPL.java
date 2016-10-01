@@ -52,12 +52,6 @@ public class REPL {
     // 최초 실행 후 파일리스트를 아직 읽지 않았음을 표시
     public static boolean bFileRead = false;
     
-    /**
-     * 케럿의 위치를 옮기고 iPosCaretCur 변수도 갱신한다.
-     * @param iPos 
-     */
-    
-      
     public static void init(AnchorPane apane) {
         caREPL = new CodeArea();
         caREPL.setWrapText(true);// 이렇게 하면 HScrollBar는 안 생긴다.
@@ -77,6 +71,13 @@ public class REPL {
                 iPosCaretCur = caREPL.getCaretPosition();
                 KeyCode kc = ke.getCode();
                 
+                //무조건 무시할 키입력들
+                if (kc == KeyCode.PAGE_UP) {
+                    ke.consume();
+                    return;
+                }
+                
+                // 오른쪽 시작위치에서 BS나 <-키를 입력하면 무시한다.
                 if ( iPosCaretCur <= iPosCaretBlock ) {
                     if (kc == KeyCode.BACK_SPACE || kc == KeyCode.LEFT ) {
                         ke.consume();
@@ -161,7 +162,11 @@ public class REPL {
         });
 
     }
-    
+
+    /**
+     * 케럿의 위치를 옮기고 iPosCaretCur 변수도 갱신한다.
+     * @param iPos 
+     */
     public static void moveCaretTo(int iPos){
         caREPL.moveTo(iPos);// not caREPL.positionTo()
         iPosCaretCur = caREPL.getCaretPosition();

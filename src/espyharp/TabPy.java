@@ -5,6 +5,7 @@
  */
 package espyharp;
 
+import java.io.File;
 import java.util.function.IntFunction;
 import javafx.application.Platform;
 import javafx.scene.control.Tab;
@@ -26,6 +27,7 @@ public class TabPy extends Tab {
     private CodeArea codeArea = new CodeArea();
     private String strSent;
     private String strRcvd;
+    private File file = null;
     
     
     public TabPy(String fileName) {
@@ -159,5 +161,13 @@ public class TabPy extends Tab {
 
     public CodeArea getCodeArea() {
         return codeArea;
+    }
+
+    public File getFile() {
+        return file;
+    }
+    
+    public void setFile(File fileR) {
+        this.file = fileR;
     }
 }

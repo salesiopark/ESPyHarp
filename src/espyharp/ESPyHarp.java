@@ -16,8 +16,6 @@ import javafx.stage.Stage;
  * @author salesiopark
  */
 public class ESPyHarp extends Application {
-    public static String strVer = "ver. 0.1.0";
-    
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDoc.fxml"));
@@ -27,7 +25,7 @@ public class ESPyHarp extends Application {
         stage.setScene(scene);
         stage.show();
         //-------------------------------------
-        stage.setTitle("ESPyHarp "+strVer);
+        stage.setTitle(Var.strNameVer);
     }
 
     /**

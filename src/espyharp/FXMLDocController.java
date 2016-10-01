@@ -14,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TreeView;
@@ -43,6 +44,9 @@ public class FXMLDocController implements Initializable {
     @FXML private MenuItem menuItemSave;
     @FXML private MenuItem menuItemAbout;
     @FXML private MenuItem menuItemNewFile;
+    @FXML private MenuItem menuItemSaveAs;
+    
+    @FXML private Label lblMsg;
     
     @FXML private ComboBox cbPort;
     
@@ -80,21 +84,19 @@ public class FXMLDocController implements Initializable {
 
         menuItemOpen.setOnAction(event -> FileIO.openFile(tpCode));
         menuItemSave.setOnAction(event -> FileIO.saveFile(tpCode));
+        menuItemSaveAs.setOnAction(event -> FileIO.saveFileAs(tpCode));
 
         menuItemAbout.setOnAction(event -> {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("About");
-            alert.setHeaderText("ESPyHarp "+ESPyHarp.strVer);
-            alert.setContentText("ESPyHarp is a IDE for developing MicroPython apps."
-                    +" It is especially for ESP8266 board with MicroPython firmware."
-                    +"\n\nDeveloped by Salesio Park (박장현, 목포대학교 전기제어공학과)"
-            );
+            alert.setHeaderText(Var.strNameVer);
+            alert.setContentText(Var.strAbout);
             alert.showAndWait();
         });
         menuItemNewFile.setOnAction(event->TabPaneCode.addNewFileTab());
         
 
-        btnConnect.setOnAction(event -> Uart.connect());
+        btnConnect.setOnAction(event -> Uart.connect(btnConnect));
         
         btnNewFile.setOnAction(event->TabPaneCode.addNewFileTab());
         

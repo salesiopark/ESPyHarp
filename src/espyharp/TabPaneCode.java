@@ -21,6 +21,7 @@ public class TabPaneCode {
 
     static public void init(TabPane tabPaneR) {
         tabPane = tabPaneR;
+        Util.setCss(tabPane, "pyTab.css", "tabpane");
         
         // 모든 Tab에 x버튼을 보이게 한다.
         tabPane.tabClosingPolicyProperty().set(TabPane.TabClosingPolicy.ALL_TABS);
@@ -46,11 +47,11 @@ public class TabPaneCode {
      * FileIO에서 CodeArea를 사용하므로 그것을 반환하도록 변경
      * @param name 파일이름을 탭이름으로 사용
      */
-    static public CodeArea addTab(String name) {
+    static public TabPy addTab(String name) {
         TabPy tabPy = new TabPy(name);
         tabPane.getTabs().add(tabPy);
         activateTab(name);
-        return tabPy.getCodeArea();
+        return tabPy;
     }
     
     static public void replaceCode(String nameTab, String code) {
@@ -93,5 +94,9 @@ public class TabPaneCode {
     static public String getSelectedTabCode() {
         TabPy tabPy = (TabPy)tabPane.getSelectionModel().getSelectedItem();
         return tabPy.getCodeArea().getText();
+    }
+
+    static public TabPy getSelectedTab() {
+        return (TabPy)tabPane.getSelectionModel().getSelectedItem();
     }
 }
