@@ -23,7 +23,7 @@ and open the template in the editor.
 }
 
 //----------------------------------------------------------------------------
-
+/*
 .lineno { // 줄번호 영역의 스타일 지정
     -fx-font-family: Consolas;//monospace;
     -fx-background-color: #474842;// #272822;
@@ -74,3 +74,4 @@ and open the template in the editor.
     -fx-font-size: 16px;
     -fx-text-fill: #a0522d;
  }
+ */

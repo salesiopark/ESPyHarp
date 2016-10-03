@@ -52,13 +52,15 @@ public class REPL {
     public static boolean bFileRead = false;
     
     // 실행속도를 높이기 위해서 버퍼링을 수행해야 함
-    private static final int BUFSIZE = 1000;
+    private static final int BUFSIZE = 1400;
+    private static final int BUF_BRIDGE_SIZE = 400;
     
     public static void init(AnchorPane apane) {
         caREPL = new CodeArea();
         caREPL.setWrapText(true);// 이렇게 하면 HScrollBar는 안 생긴다.
-//        String stylesheet = ESPyHarp.class.getResource("caREPL.css").toExternalForm();
-        String stylesheet = ESPyHarp.class.getResource("pyTab.css").toExternalForm();
+        String stylesheet = ESPyHarp.class.getResource("caREPL.css").toExternalForm();
+        // 하이라이트기능을 켜려면 밑에줄ㅇ로 바꿔야 한다.
+        //String stylesheet = ESPyHarp.class.getResource("pyTab.css").toExternalForm();
         caREPL.getStylesheets().add(stylesheet);
         
         // 스크롤바를 붙이려면 아래와 같이 VirtualizedScrollPane 을 생성해서 붙여야 한다.
@@ -141,13 +143,14 @@ public class REPL {
                 }
         });
         
-        // 키워드 하이라이팅 (동기방식)
-        // RichTextFx 의 java-keword 데모에서 복사함.
-        caREPL.richChanges()
-                .filter(ch -> !ch.getInserted().equals(ch.getRemoved())) // XXX
-                .subscribe(change -> {
-                    caREPL.setStyleSpans(0, KWH.computeHighlighting(caREPL.getText()));
-        });
+//        // 키워드 하이라이팅 (동기방식)
+//        // RichTextFx 의 java-keword 데모에서 복사함.
+//          // 문자열하이리이팅에 문제가 있으서 꺼둠
+//        caREPL.richChanges()
+//                .filter(ch -> !ch.getInserted().equals(ch.getRemoved())) // XXX
+//                .subscribe(change -> {
+//                    caREPL.setStyleSpans(0, KWH.computeHighlighting(caREPL.getText()));
+//        });
 
         caREPL.setDisable(true);
         
@@ -202,8 +205,11 @@ public class REPL {
                         // codeArea의 text를 리셋한다.
                         if (caREPL.getText().length()<=BUFSIZE ) {
                             caREPL.appendText(receivedData);
-                        } else {
-                            caREPL.replaceText(receivedData);
+                        } else { //if (caREPL.getText().length()>BUFSIZE ) {
+                            // 갑자기 잘리는 것을 방지하기 위해
+                            // BUF_BRIDGE_SIZE 만큼은 남기고 자른다.
+                            String strLast = caREPL.getText().substring(BUFSIZE-BUF_BRIDGE_SIZE);
+                            caREPL.replaceText(strLast+receivedData);
                         }
                         
                         ///*
@@ -211,6 +217,7 @@ public class REPL {
                             String str = caREPL.getText();
                             iPosCaretBlock = iPosCommStrt = str.length();
                             moveCaretTo(iPosCommStrt);
+
                             bIdleMode = true;
                             
                             // 이 함수 종료후 다른 쓰레드에서 파일리스트를 읽어들인다.
