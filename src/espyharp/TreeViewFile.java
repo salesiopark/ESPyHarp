@@ -75,23 +75,22 @@ public class TreeViewFile {
         readFile(nameSelected);
     }
     
-    public static void readFile(String name) {
-        if (REPL.isIdle()) {
+    private static void readFile(String name) {
+//        if (REPL.isIdle()) {
             strRcvd = "";
             Uart.setListener(new FileReader());
             commSent = String.format("print(open('%s').read())", name);
             Uart.exec(commSent);
-        }
+//        }
     }
 
     public static void readFileList() {
-        if (REPL.isIdle()) {
+//        if (REPL.isIdle()) {
             root.getChildren().clear();
-//            System.out.println("readFileLIst() normal");
             strRcvd = "";
             Uart.setListener(new FileListReader());
             Uart.exec("uos.listdir()");
-        }
+//        }
     }
     
     /**
@@ -140,20 +139,16 @@ public class TreeViewFile {
                 try {
                     String receivedData = Uart.getPort().readString(event.getEventValue());
                     
-                    //아래와 같이 하지 않으면 thread 에러가 발생한다.
-                    // 현재 thread가 종료된 이후에 실행된다.
-//                    Platform.runLater( () -> {
-                        strRcvd += receivedData;
-                        if (receivedData.contains(">>> ")) {
-                            REPL.setListener(">>> ");
-                        }
-                        Pattern pattern = Pattern.compile("'(.*?)'");
-                        Matcher matcher = pattern.matcher(strRcvd);
-                        while (matcher.find()) {
-                            System.out.println("filename: "+matcher.group(1));
-                            root.getChildren().add(new TreeItem<String>(matcher.group(1)));
-                        }
-//                    });
+                    strRcvd += receivedData;
+                    if (receivedData.contains(">>> ")) {
+                        REPL.setListener(">>> ");
+                    }
+                    Pattern pattern = Pattern.compile("'(.*?)'");
+                    Matcher matcher = pattern.matcher(strRcvd);
+                    while (matcher.find()) {
+                        System.out.println("filename: "+matcher.group(1));
+                        root.getChildren().add(new TreeItem<String>(matcher.group(1)));
+                    }
                         
                 }
                 catch (SerialPortException ex) {

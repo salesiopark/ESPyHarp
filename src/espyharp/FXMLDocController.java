@@ -20,6 +20,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
 
+import espyharp.REPL.TASK;
 /**
  *
  * @author salesiopark
@@ -62,9 +63,15 @@ public class FXMLDocController implements Initializable {
 //        TreeViewFile.readFileList();
         
         btnRunMainPy.setOnAction(event -> Uart.exec("exec(open('main.py').read(),globals())"));
-
         btnFiles.setOnAction(event -> Uart.exec("uos.listdir()"));
-        btnRefreshFiles.setOnAction(event -> TreeViewFile.readFileList());
+
+        // TreeView에 속한 버튼들
+//        btnRefreshFiles.setOnAction(event -> TreeViewFile.readFileList());
+        btnRefreshFiles.setOnAction(event -> REPL.doTask(TASK.REFRESH_FILE_LIST));
+//        btnReadFile.setOnAction(event->TreeViewFile.readFileSelected());
+        btnReadFile.setOnAction(event-> REPL.doTask(TASK.READ_FILE_SELECTED_FROM_DEVICE));
+        btnExec.setOnAction((event)->TreeViewFile.execSelected());
+        
         
         btnUpload.setOnAction((ActionEvent event) -> {
             if (Uart.isNotOpened()) return;
@@ -100,9 +107,6 @@ public class FXMLDocController implements Initializable {
         
         btnNewFile.setOnAction(event->TabPaneCode.addNewFileTab());
         
-        btnReadFile.setOnAction(event->TreeViewFile.readFileSelected());
-        
-        btnExec.setOnAction((event)->TreeViewFile.execSelected());
         
     } // public void initialize(URL url, ResourceBundle rb) {
 }

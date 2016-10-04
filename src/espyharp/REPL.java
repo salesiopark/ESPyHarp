@@ -184,10 +184,11 @@ public class REPL {
     */
     public static void setListener(String strR){
         Uart.setListener(listener);
-//        caREPL.appendText(strR);
-        String str = caREPL.getText();
-        iPosCaretBlock = iPosCommStrt = str.length();
-        moveCaretTo(iPosCommStrt);
+//        String str = caREPL.getText();
+//        iPosCaretBlock = iPosCommStrt = str.length();
+//        moveCaretTo(iPosCommStrt);
+        //listener가 복구되면 idle모드가 된다.
+        bIdleMode = true;
     }
     
     public static class PortReader implements SerialPortEventListener {
@@ -217,16 +218,21 @@ public class REPL {
                             String str = caREPL.getText();
                             iPosCaretBlock = iPosCommStrt = str.length();
                             moveCaretTo(iPosCommStrt);
-
                             bIdleMode = true;
-                            
-                            // 이 함수 종료후 다른 쓰레드에서 파일리스트를 읽어들인다.
-                            if (!bFileRead) {
-                                Platform.runLater(()->{
-                                    TreeViewFile.readFileList();
-                                    bFileRead = true;
-                                });
+//                            // 이 함수 종료후 다른 쓰레드에서 파일리스트를 읽어들인다.
+//                            if (!bFileRead) {
+//                                Platform.runLater(()->{
+//                                    TreeViewFile.readFileList();
+//                                    bFileRead = true;
+//                                });
+//                            } else {
+//                                bIdleMode = true;
+//                            }
+                            if (taskToDo != TASK.NONE) {
+                                doTask(taskToDo);
+                                taskToDo = TASK.NONE;
                             }
+
                         } else if (receivedData.contains("... ")) {
                             String str = caREPL.getText();
                             iPosCaretBlock = str.lastIndexOf("... ") + 4;
@@ -253,5 +259,49 @@ public class REPL {
     
     static public void appendText(String str) {
         caREPL.appendText(str+"\n");
+    }
+    
+    /**
+     *  키인터럽트를 걸고 수행할 수 있는 일들
+     *   taskToDo 변수를 생성하기 위한 enum 객체
+     */
+    static public enum TASK {
+        REFRESH_FILE_LIST,
+        READ_FILE_SELECTED_FROM_DEVICE,
+        EXEC_FILE_SELECTED,
+        REMOVE_FILE_SELECTED_IN_DIVICE,
+        WRITE_TO_DEVICE,
+        WRITE_AND_EXEC,
+        NONE
+    }
+    
+    static private TASK taskToDo = TASK.REFRESH_FILE_LIST;
+            
+    
+    // 외부에서 어떤 task를 수행하고자 할 때
+    // idle모드가 아니면 키인터럽트를 걸고
+    static public void doTask(TASK taskR){
+        if (bIdleMode) {
+            bIdleMode = false;
+            //이후에 listener가 되돌아오면 idel모드가 true가 된다.
+            switch(taskR) {
+                case REFRESH_FILE_LIST:
+                    TreeViewFile.readFileList();
+                    break;
+                case READ_FILE_SELECTED_FROM_DEVICE:
+                    TreeViewFile.readFileSelected();
+                    break;
+                    
+//                case WRITE_TO_DEVICE:
+//                    break;
+//                case WRITE_AND_EXEC:
+//                    break;
+            }
+        } else {
+            Uart.sendByte(3); // key intr
+            // ">>> "가 들어온 후 task를 수행하기 위해서
+            // taskToDo 변수를 설정한다.
+            taskToDo = taskR;
+        }
     }
 }

@@ -50,7 +50,7 @@ public class KWH {
     
     private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", PYKEYWORDS) + ")\\b";
     private static final String BUILTIN_PATTERN = "\\b(" + String.join("|", PYBUILTINS) + ")\\b";
-    private static final String STRING_PATTERN = "(\"([^\"\\\\]|\\\\.)*\")|('([^'\\\\]|\\\\.)*')";
+    private static final String STRING_PATTERN = "(\"([^\"\\\\]|\\\\.)*\")|('([^'\\\\]|\\\\.)*')";//+"|(\"\"\"([^'\\\\]|\\\\.)*\"\"\")|"
     private static final String COMMENT_PATTERN = "#[^\n]*";
     private static final String NUMBER_PATTERN = "\\b((0b|0x|0o)?(\\d)+(\\.\\d*)?(e[+-]?\\d+)?)\\b";
 
