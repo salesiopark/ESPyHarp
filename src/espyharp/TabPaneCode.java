@@ -99,4 +99,16 @@ public class TabPaneCode {
     static public TabPy getSelectedTab() {
         return (TabPy)tabPane.getSelectionModel().getSelectedItem();
     }
+    
+    static public void uploadActivatedTabCode() {
+        if (Uart.isNotOpened()) return;
+        // 현재 선택된 tab을 뽑아낸 후 download()메서드를 호출한다.
+        getSelectedTab().upload();
+    }
+
+    static public void uploadAndExecActivatedTabCode() {
+        if (Uart.isNotOpened()) return;
+        // 현재 선택된 tab을 뽑아낸 후 download()메서드를 호출한다.
+        getSelectedTab().uploadAndExec();
+    }
 }

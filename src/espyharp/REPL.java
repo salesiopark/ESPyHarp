@@ -275,27 +275,33 @@ public class REPL {
         NONE
     }
     
+    // connect 된 후 바로 실행할 일을 초기값으로 설정한다.
     static private TASK taskToDo = TASK.REFRESH_FILE_LIST;
             
     
     // 외부에서 어떤 task를 수행하고자 할 때
-    // idle모드가 아니면 키인터럽트를 걸고
+    // idle모드이면 바로 수행하고
+    // idle모드가 아니면 키인터럽트 걸고 ">>> "가 들어온 후 수행한다.
     static public void doTask(TASK taskR){
         if (bIdleMode) {
             bIdleMode = false;
             //이후에 listener가 되돌아오면 idel모드가 true가 된다.
             switch(taskR) {
+                
                 case REFRESH_FILE_LIST:
                     TreeViewFile.readFileList();
                     break;
+                    
                 case READ_FILE_SELECTED_FROM_DEVICE:
                     TreeViewFile.readFileSelected();
                     break;
                     
-//                case WRITE_TO_DEVICE:
-//                    break;
-//                case WRITE_AND_EXEC:
-//                    break;
+                case WRITE_TO_DEVICE:
+                    TabPaneCode.uploadActivatedTabCode();
+                    break;
+                case WRITE_AND_EXEC:
+                    TabPaneCode.uploadAndExecActivatedTabCode();
+                    break;
             }
         } else {
             Uart.sendByte(3); // key intr

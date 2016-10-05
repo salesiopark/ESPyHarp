@@ -73,19 +73,9 @@ public class FXMLDocController implements Initializable {
         btnExec.setOnAction((event)->TreeViewFile.execSelected());
         
         
-        btnUpload.setOnAction((ActionEvent event) -> {
-            if (Uart.isNotOpened()) return;
-            // 현재 선택된 tab을 뽑아낸 후 download()메서드를 호출한다.
-            TabPy tapPySelected = (TabPy)( tpCode.getSelectionModel().getSelectedItem() );
-            tapPySelected.upload();
-        });
+        btnUpload.setOnAction(event-> REPL.doTask(TASK.WRITE_TO_DEVICE));
 
-        btnWriteAndExec.setOnAction((ActionEvent event) -> {
-            if (Uart.isNotOpened()) return;
-            // 현재 선택된 tab을 뽑아낸 후 download()메서드를 호출한다.
-            TabPy tapPySelected = (TabPy)( tpCode.getSelectionModel().getSelectedItem() );
-            tapPySelected.uploadAndExec();
-        });
+        btnWriteAndExec.setOnAction(event -> REPL.doTask(TASK.WRITE_AND_EXEC));
 
         btnRemove.setOnAction(event -> TreeViewFile.removeSelected());
 
