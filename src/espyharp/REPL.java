@@ -76,12 +76,13 @@ public class REPL {
                 KeyCode kc = ke.getCode();
                 
                 //무조건 무시할 키입력들
-                if (kc == KeyCode.PAGE_UP) {
+                // 일단 up키는 무시하고 후에 history기능을 구현한다.
+                if (kc == KeyCode.PAGE_UP || kc==KeyCode.UP) {
                     ke.consume();
                     return;
                 }
                 
-                // 오른쪽 시작위치에서 BS나 <-키를 입력하면 무시한다.
+                // 오른쪽 시작 위치에서 BS나 <-키를 입력하면 무시한다.
                 if ( iPosCaretCur <= iPosCaretBlock ) {
                     if (kc == KeyCode.BACK_SPACE || kc == KeyCode.LEFT ) {
                         ke.consume();

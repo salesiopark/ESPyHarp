@@ -10,7 +10,7 @@ package espyharp;
  * @author salesiopark
  */
 public class Var {
-    static public String strNameVer = "ESPyHarp ver. 0.2.0";
+    static public String strNameVer = "ESPyHarp ver. 0.2.1";
     static public String strAbout = "ESPyHarp is an IDE for developing MicroPython apps."
         +" It is especially for ESP8266 embeded board (e.g. NodeMCU) with MicroPython firmware."
         +"\n\nDeveloped by Salesio Park (박장현, 목포대학교 전기제어공학과)";
