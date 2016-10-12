@@ -33,7 +33,7 @@ public class REPL {
     public static CodeArea caREPL = new CodeArea();
     public static int iPosCaretBlock = 0; // 커서의 맨 뒷 위치
     
-    // caret의 현재 위치를 기록한다. codeArea.getCaretPosition() 로 구하자만
+    // caret의 현재 위치를 기록한다. codeArea.getCaretPosition() 로 구할 수 있지만
     // 만약 마우스클릭이벤터가 일어났다면 caret의 위치가 이미 변경되었으므로
     // 그 이전의 (올바른) 위치로 caret을 옮길 때 참조하는 변수다
     public static int iPosCaretCur = 0;
@@ -53,13 +53,14 @@ public class REPL {
     
     // 실행속도를 높이기 위해서 버퍼링을 수행해야 함
     private static final int BUFSIZE = 1400;
+    // 버퍼가 넘칠 때 이 사이즈만큼만 남기고 다 삭제한다.
     private static final int BUF_BRIDGE_SIZE = 400;
     
     public static void init(AnchorPane apane) {
         caREPL = new CodeArea();
         caREPL.setWrapText(true);// 이렇게 하면 HScrollBar는 안 생긴다.
         String stylesheet = ESPyHarp.class.getResource("caREPL.css").toExternalForm();
-        // 하이라이트기능을 켜려면 밑에줄ㅇ로 바꿔야 한다.
+        // 하이라이트기능을 켜려면 밑에줄로 바꿔야 한다.
         //String stylesheet = ESPyHarp.class.getResource("pyTab.css").toExternalForm();
         caREPL.getStylesheets().add(stylesheet);
         
